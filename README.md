@@ -72,15 +72,13 @@ The things above are related to specifying permissions, the last thing is, we ne
 @GetMapping("groups")
 @PreAuthorize("hasPermission('group', 'viewAll')")
 public List<GroupDTO> getCurrentUser() {
-    List<GroupDTO> groups = this.groupService.findAllGroups();
-    return groups;
+    return this.groupService.findAllGroups();
 }
 
 @GetMapping("groups/{id}")
 @PreAuthorize("hasPermission(#id, 'group', 'viewDetail')")
 public GroupDetailDTO getGroupDetail(@PathVariable long id) {
-    GroupDetailDTO group = this.groupService.getGroupDetail(id);
-    return group;
+    return this.groupService.getGroupDetail(id);
 }
 ```
 
