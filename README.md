@@ -57,8 +57,8 @@ user.addPermissionRules(
     ConditionsFactory::and(
         (user, group) -> group.isPublic(),
         ConditionsFactory::or(
-            GroupConditions::isVisibleFromNow(),
-            GroupConditions::isSuperGlobal()
+            GroupConditions::isVisibleFromNow(user, group),
+            GroupConditions::isSuperGlobal(user, group)
         )
     )
 );
