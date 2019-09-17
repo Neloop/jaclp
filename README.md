@@ -27,8 +27,8 @@ The main thing in usage of `jaclp` library is definition of permission itself. T
 Role user = new Role("user");
 user.addPermissionRules(
     true,
-    "resource",
-    "create"
+    "group",
+    "viewAll"
 );
 
 ```
@@ -39,9 +39,9 @@ user.addPermissionRules(
 Role user = new Role("user");
 user.addPermissionRules(
     true,
-    "resource",
-    new String[] {"view"},
-    (user, resource) -> resource.isPublic()
+    "group",
+    new String[] {"viewDetail"},
+    (user, group) -> group.isPublic()
 );
 
 ```
@@ -52,13 +52,13 @@ user.addPermissionRules(
 Role user = new Role("user");
 user.addPermissionRules(
     true,
-    "resource",
-    new String[] {"view"},
+    "group",
+    new String[] {"viewStats"},
     ConditionsFactory::and(
-        (user, resource) -> resource.isPublic(),
+        (user, group) -> group.isPublic(),
         ConditionsFactory::or(
-            ResourceConditions::isVisibleFromNow(),
-            ResourceConditions::isSuperGlobal()
+            GroupConditions::isVisibleFromNow(),
+            GroupConditions::isSuperGlobal()
         )
     )
 );
@@ -66,14 +66,21 @@ user.addPermissionRules(
 
 The things above are related to specifying permissions, the last thing is, we need to use the permissions. The permissions are used whenever Spring Security permission expression `hasPermission` is called. Therefore we can use this library in `Authorize` annotations which ideally would be located on all public endpoints.
 
-**Sample GET user endpoint:**
+**Sample GET group endpoints:**
 
 ```java
-@GetMapping("users")
-@PreAuthorize("hasPermission('user', 'view')")
-public UserDTO getCurrentUser() {
-    UserDTO user = this.userService.getCurrentUser();
-    return user;
+@GetMapping("groups")
+@PreAuthorize("hasPermission('group', 'viewAll')")
+public List<GroupDTO> getCurrentUser() {
+    List<GroupDTO> groups = this.groupService.findAllGroups();
+    return groups;
+}
+
+@GetMapping("groups/{id}")
+@PreAuthorize("hasPermission(#id, 'group', 'viewDetail')")
+public GroupDetailDTO getGroupDetail(@PathVariable long id) {
+    GroupDetailDTO group = this.groupService.getGroupDetail(id);
+    return group;
 }
 ```
 
