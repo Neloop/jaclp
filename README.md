@@ -1,5 +1,7 @@
 # JACLP: Java ACL Permissions library
 
+[![Build Status](https://travis-ci.org/Neloop/jaclp.svg?branch=master)](https://travis-ci.org/Neloop/jaclp)
+
 **JACLP: ACL Permission library for Spring Security** introduces _ACL-based_ role permission system with a touch of _ABAC_ (Attribute-based access control) over resources. It is integrated within Spring Security and its expression based permission control which might be used from `Authorize`-like annotations over endpoints or generally methods.
 
 ## Installation
