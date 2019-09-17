@@ -1,8 +1,9 @@
 # JACLP: Java ACL Permissions library
 
 [![Build Status](https://travis-ci.org/Neloop/jaclp.svg?branch=master)](https://travis-ci.org/Neloop/jaclp)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Neloop/jaclp/blob/master/LICENSE)
 
-**JACLP: ACL Permission library for Spring Security** introduces _ACL-based_ role permission system with a touch of _ABAC_ (Attribute-based access control) over resources. It is integrated within Spring Security and its expression based permission control which might be used from `Authorize`-like annotations over endpoints or generally methods.
+**JACLP: ACL Permission library for Spring Security** introduces static _ACL-based_ role permission system with a touch of _ABAC_ (Attribute-based access control) over resources. It is integrated within Spring Security and its expression based permission control which might be used from `Authorize`-like annotations over endpoints or generally methods.
 
 ## Installation
 
@@ -160,7 +161,7 @@ public class PermissionsService implements IPermissionsService {
 
 ## Example Usage
 
-The main thing in usage of `acl-permission` library is definition of permission itself. There are two ways how to do this, either using role-based _ACL_, or _ABAC_ authorization. Role-based _ACL_ defines if action is allowed on resource or not. _ABAC_ in this implementation is created on top of ACL and adds condition to the authorization. Condition is resource-specific action which has to be checked against particular resource object obtained from resource repository. Examples of simple and complex usage of _ACL_ and _ABAC_ condition follows.
+The main thing in usage of `jaclp` library is definition of permission itself. There are two ways how to do this, either using role-based _ACL_, or _ABAC_ authorization. Role-based _ACL_ defines if action is allowed on resource or not. _ABAC_ in this implementation is created on top of ACL and adds condition to the authorization. Condition is resource-specific action which has to be checked against particular resource object obtained from resource repository. Examples of simple and complex usage of _ACL_ and _ABAC_ condition follows.
 
 **Define role-based ACL permissions:**
 
