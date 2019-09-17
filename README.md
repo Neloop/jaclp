@@ -6,7 +6,7 @@
 
 Installation of the library is possible through maven dependencies and only from kraken environment:
 
-```
+```xml
 <dependency>
     <groupId>cz.polankam.security.acl</groupId>
     <artifactId>jaclp</artifactId>
@@ -20,7 +20,7 @@ There are two steps which needs to be done after installing `jaclp` dependency. 
 
 ### Permission Configuration Example
 
-```
+```java
 package app.config;
 
 import cz.polankam.security.acl.AclPermissionEvaluator;
@@ -71,7 +71,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
 Following implementation is only example and it should be different for every project. The important thing is to implement `getRole()` and `getResource()` methods to comply `IPermissionService` interface. Get role method should return `Role` object which contains defined permission rules for the given role identification. Get resource method is used for _ABAC_ authorization and should return resource repository for given resource identification. If project does not use _ABAC_ authorization `getResource()` can return empty list.
 
-```
+```java
 package app.security.acl;
 
 import app.repositories.FileRepository;
@@ -162,7 +162,7 @@ The main thing in usage of `acl-permission` library is definition of permission 
 
 **Define role-based ACL permissions:**
 
-```
+```java
 Role user = new Role("user");
 user.addPermissionRules(
     true,
@@ -174,7 +174,7 @@ user.addPermissionRules(
 
 **Define simple ABAC permissions on resource:**
 
-```
+```java
 Role user = new Role("user");
 user.addPermissionRules(
     true,
@@ -187,7 +187,7 @@ user.addPermissionRules(
 
 **Define complex ABAC permissions on resource:**
 
-```
+```java
 Role user = new Role("user");
 user.addPermissionRules(
     true,
@@ -207,7 +207,7 @@ The things above are related to specifying permissions, the last thing is, we ne
 
 **Sample GET user endpoint:**
 
-```
+```java
 @GetMapping("users")
 @PreAuthorize("hasPermission('user', 'view')")
 public UserDTO getCurrentUser() {
