@@ -24,8 +24,8 @@ The main thing in usage of `jaclp` library is definition of permission itself. T
 **Define role-based ACL permissions:**
 
 ```java
-Role user = new Role("user");
-user.addPermissionRules(
+Role userRole = new Role("user");
+userRole.addPermissionRules(
     true,
     "group",
     "viewAll"
@@ -36,8 +36,8 @@ user.addPermissionRules(
 **Define simple ABAC permissions on resource:**
 
 ```java
-Role user = new Role("user");
-user.addPermissionRules(
+Role userRole = new Role("user");
+userRole.addPermissionRules(
     true,
     "group",
     new String[] {"viewDetail"},
@@ -49,8 +49,8 @@ user.addPermissionRules(
 **Define complex ABAC permissions on resource:**
 
 ```java
-Role user = new Role("user");
-user.addPermissionRules(
+Role userRole = new Role("user");
+userRole.addPermissionRules(
     true,
     "group",
     new String[] {"viewStats"},
