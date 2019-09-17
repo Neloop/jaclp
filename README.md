@@ -17,6 +17,66 @@ Installation of the library is possible through maven dependencies and only from
 </dependency>
 ```
 
+## Example Usage
+
+The main thing in usage of `jaclp` library is definition of permission itself. There are two ways how to do this, either using role-based _ACL_, or _ABAC_ authorization. Role-based _ACL_ defines if action is allowed on resource or not. _ABAC_ in this implementation is created on top of ACL and adds condition to the authorization. Condition is resource-specific action which has to be checked against particular resource object obtained from resource repository. Examples of simple and complex usage of _ACL_ and _ABAC_ condition follows.
+
+**Define role-based ACL permissions:**
+
+```java
+Role user = new Role("user");
+user.addPermissionRules(
+    true,
+    "resource",
+    "create"
+);
+
+```
+
+**Define simple ABAC permissions on resource:**
+
+```java
+Role user = new Role("user");
+user.addPermissionRules(
+    true,
+    "resource",
+    new String[] {"view"},
+    (user, resource) -> resource.isPublic()
+);
+
+```
+
+**Define complex ABAC permissions on resource:**
+
+```java
+Role user = new Role("user");
+user.addPermissionRules(
+    true,
+    "resource",
+    new String[] {"view"},
+    ConditionsFactory::and(
+        (user, resource) -> resource.isPublic(),
+        ConditionsFactory::or(
+            ResourceConditions::isVisibleFromNow(),
+            ResourceConditions::isSuperGlobal()
+        )
+    )
+);
+```
+
+The things above are related to specifying permissions, the last thing is, we need to use the permissions. The permissions are used whenever Spring Security permission expression `hasPermission` is called. Therefore we can use this library in `Authorize` annotations which ideally would be located on all public endpoints.
+
+**Sample GET user endpoint:**
+
+```java
+@GetMapping("users")
+@PreAuthorize("hasPermission('user', 'view')")
+public UserDTO getCurrentUser() {
+    UserDTO user = this.userService.getCurrentUser();
+    return user;
+}
+```
+
 ## Integration
 
 There are two steps which needs to be done after installing `jaclp` dependency. Former is implement permissions configuration, latter defining `PermissionService`. Configuration is used for defining permission expression evaluator and integrate it in your project. Permission service should implement `IPermissionService` interface and define all user roles and their permissions within your project.
@@ -156,65 +216,5 @@ public class PermissionsService implements IPermissionsService {
 
         return repository;
     }
-}
-```
-
-## Example Usage
-
-The main thing in usage of `jaclp` library is definition of permission itself. There are two ways how to do this, either using role-based _ACL_, or _ABAC_ authorization. Role-based _ACL_ defines if action is allowed on resource or not. _ABAC_ in this implementation is created on top of ACL and adds condition to the authorization. Condition is resource-specific action which has to be checked against particular resource object obtained from resource repository. Examples of simple and complex usage of _ACL_ and _ABAC_ condition follows.
-
-**Define role-based ACL permissions:**
-
-```java
-Role user = new Role("user");
-user.addPermissionRules(
-    true,
-    "resource",
-    "create"
-);
-
-```
-
-**Define simple ABAC permissions on resource:**
-
-```java
-Role user = new Role("user");
-user.addPermissionRules(
-    true,
-    "resource",
-    new String[] {"view"},
-    (user, resource) -> resource.isPublic()
-);
-
-```
-
-**Define complex ABAC permissions on resource:**
-
-```java
-Role user = new Role("user");
-user.addPermissionRules(
-    true,
-    "resource",
-    new String[] {"view"},
-    ConditionsFactory::and(
-        (user, resource) -> resource.isPublic(),
-        ConditionsFactory::or(
-            ResourceConditions::isVisibleFromNow(),
-            ResourceConditions::isSuperGlobal()
-        )
-    )
-);
-```
-
-The things above are related to specifying permissions, the last thing is, we need to use the permissions. The permissions are used whenever Spring Security permission expression `hasPermission` is called. Therefore we can use this library in `Authorize` annotations which ideally would be located on all public endpoints.
-
-**Sample GET user endpoint:**
-
-```java
-@GetMapping("users")
-@PreAuthorize("hasPermission('user', 'view')")
-public UserDTO getCurrentUser() {
-    UserDTO user = this.userService.getCurrentUser();
-    return user;
 }
 ```
