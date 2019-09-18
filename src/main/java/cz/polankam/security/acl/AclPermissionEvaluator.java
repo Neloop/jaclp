@@ -5,8 +5,8 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -18,7 +18,7 @@ import java.util.Optional;
  *
  * Created by Martin Polanka
  */
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class AclPermissionEvaluator implements PermissionEvaluator {
 
     /**
