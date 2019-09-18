@@ -1,10 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cz.polankam.security.acl</groupId>
     <artifactId>jaclp</artifactId>
     <version>0.1-SNAPSHOT</version>
+
+    <name>JACLP: Java ACL Permissions library</name>
+    <description>JACLP: ACL Permission library for Spring Security introduces static ACL-based role permission system with a touch of ABAC (Attribute-based access control) over resources. It is integrated within Spring Security and its expression based permission control which might be used from Authorize-like annotations over endpoints or generally methods in components.</description>
+    <url>https://github.com/Neloop/jaclp</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Martin Polanka</name>
+            <email>PolankaMartin@gmail.com</email>
+            <organization>polankam.cz</organization>
+            <organizationUrl>http://www.polankam.cz</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,7 +45,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>5.1.9.RELEASE</version>
-        </dependency>        
+        </dependency>
 
         <!-- Test Dependencies -->
 
@@ -54,5 +74,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:git://github.com/Neloop/jaclp.git</connection>
+        <developerConnection>scm:git:ssh://github.com:Neloop/jaclp.git</developerConnection>
+        <url>https://github.com/Neloop/jaclp/tree/master</url>
+    </scm>
 
 </project>
