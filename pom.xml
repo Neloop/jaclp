@@ -148,8 +148,8 @@
     </profiles>
 
     <scm>
-        <connection>scm:git:git://github.com/Neloop/jaclp.git</connection>
-        <developerConnection>scm:git:ssh://github.com:Neloop/jaclp.git</developerConnection>
+        <connection>scm:git:https://github.com/Neloop/jaclp.git</connection>
+        <developerConnection>scm:git:https://github.com/Neloop/jaclp.git</developerConnection>
         <url>https://github.com/Neloop/jaclp/tree/master</url>
     </scm>
 
