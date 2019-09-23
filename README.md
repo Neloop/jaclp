@@ -9,7 +9,7 @@
 
 ## Installation
 
-Installation of the library is possible through maven dependencies and only from kraken environment:
+Installation of the library is possible through maven dependencies (Maven Central):
 
 ```xml
 <dependency>
