@@ -26,6 +26,10 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 public class AclPermissionEvaluator implements PermissionEvaluator {
 
+    /** Wildcard which can be used when specifying resource or action */
+    public static final String WILDCARD = "*";
+
+
     /**
      * Permission service which contains definition of roles and resource
      * repositories used for evaluation.
@@ -156,7 +160,8 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      */
     private List<PermissionRule> findMatching(Collection<PermissionRule> rules, String resource, String action) {
         return rules.stream().filter(rule -> 
-            Objects.equals(rule.getResource(), resource) && Objects.equals(rule.getAction(), action)
+            (Objects.equals(rule.getResource(), resource) || Objects.equals(rule.getResource(), WILDCARD)) && 
+            (Objects.equals(rule.getAction(), action) || Objects.equals(rule.getAction(), WILDCARD))
         ).collect(Collectors.toList());
     }
 }

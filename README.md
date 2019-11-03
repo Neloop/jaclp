@@ -32,7 +32,6 @@ userRole.addPermissionRules(
     "group",
     "viewAll"
 );
-
 ```
 
 **Define simple ABAC permissions on resource:**
@@ -45,7 +44,6 @@ userRole.addPermissionRules(
     new String[] {"viewDetail"},
     (user, group) -> group.isPublic()
 );
-
 ```
 
 **Define complex ABAC permissions on resource:**
@@ -66,7 +64,7 @@ userRole.addPermissionRules(
 );
 ```
 
-The things above are related to specifying permissions, the last thing is, we need to use the permissions. The permissions are used whenever Spring Security permission expression `hasPermission` is called. Therefore we can use this library in `Authorize` annotations which ideally would be located on all public endpoints.
+The things above are related to specifying permissions, the next thing is, we need to use the permissions. The permissions are used whenever Spring Security permission expression `hasPermission` is called. Therefore we can use this library in `Authorize` annotations which ideally would be located on all public endpoints.
 
 **Sample GET group endpoints:**
 
