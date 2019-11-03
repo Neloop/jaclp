@@ -41,12 +41,25 @@ public class DemoPermissionsService implements IPermissionsService {
                         DemoGroupConditions::isManager
                 ),
                 "edit"
+        ).addPermissionRules(
+               false,
+               "instance",
+               "view", "edit"
+        ).addPermissionRules(
+                true,
+               "instance",
+               "join"
         );
 
         admin.addPermissionRules(
                 true,
                 "instance",
-                "view", "edit");
+                "view", "edit"
+        ).addPermissionRules(
+                false,
+                "instance",
+                "join" // not allowed for testing purposes
+        );
 
         roles.put(user.getName(), user);
         roles.put(admin.getName(), admin);

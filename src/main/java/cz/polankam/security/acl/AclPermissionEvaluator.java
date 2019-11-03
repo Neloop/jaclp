@@ -73,7 +73,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             List<PermissionRule> rules = findMatching(role.getPermissionRules(targetResource), targetResource, permissionString);
             Optional<PermissionRule> firstRule = rules.stream().findFirst();
             if (firstRule.isPresent()) {
-                if (firstRule.get().getCondition() == null) {
+                if (firstRule.get().getCondition() != null) {
                     throw new PermissionException("ABAC permission rule for resource '" + targetResource + 
                         "' and action '" + permissionString + "' was used in non-ABAC context");
                 }

@@ -39,6 +39,7 @@ class AclPermissionEvaluatorTest {
         assertFalse(evaluator.hasPermission(authenticationMock, 123L, "group", "non-existing"));
         assertFalse(evaluator.hasPermission(authenticationMock, "instance", "view"));
         assertFalse(evaluator.hasPermission(authenticationMock, "instance", "edit"));
+        assertTrue(evaluator.hasPermission(authenticationMock, "instance", "join"));
         assertFalse(evaluator.hasPermission(authenticationMock, 123L, "non-existing", "view"));
     }
 
@@ -51,6 +52,7 @@ class AclPermissionEvaluatorTest {
         assertFalse(evaluator.hasPermission(authenticationMock, 123L, "group", "non-existing"));
         assertFalse(evaluator.hasPermission(authenticationMock, "instance", "view"));
         assertFalse(evaluator.hasPermission(authenticationMock, "instance", "edit"));
+        assertTrue(evaluator.hasPermission(authenticationMock, "instance", "join"));
         assertFalse(evaluator.hasPermission(authenticationMock, 123L, "non-existing", "view"));
     }
 
@@ -63,6 +65,7 @@ class AclPermissionEvaluatorTest {
         assertFalse(evaluator.hasPermission(authenticationMock, 123L, "group", "non-existing"));
         assertTrue(evaluator.hasPermission(authenticationMock, "instance", "view"));
         assertTrue(evaluator.hasPermission(authenticationMock, "instance", "edit"));
+        assertFalse(evaluator.hasPermission(authenticationMock, "instance", "join"));
         assertFalse(evaluator.hasPermission(authenticationMock, 123L, "non-existing", "view"));
     }
 }
