@@ -63,7 +63,7 @@ public class DemoPermissionsService implements IPermissionsService {
         );
 
         superadmin.addPermissionRules(
-            true, "*", "*" // superadmin can do everything... literally
+                true, "*", "*" // superadmin can do everything... literally
         );
 
         roles.put(user.getName(), user);

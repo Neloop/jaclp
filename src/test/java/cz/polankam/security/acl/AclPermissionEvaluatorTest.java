@@ -73,6 +73,14 @@ class AclPermissionEvaluatorTest {
     void hasPermission_Superadmin() {
         when(authenticationMock.getPrincipal()).thenReturn(new DemoUser("superadmin", "SUPERADMIN"));
 
-        // TODO
+        // superadmin can do literally everything
+        assertTrue(evaluator.hasPermission(authenticationMock, 123L, "group", "view"));
+        assertTrue(evaluator.hasPermission(authenticationMock, 123L, "group", "edit"));
+        assertTrue(evaluator.hasPermission(authenticationMock, 123L, "group", "non-existing"));
+        assertTrue(evaluator.hasPermission(authenticationMock, "instance", "view"));
+        assertTrue(evaluator.hasPermission(authenticationMock, "instance", "edit"));
+        assertTrue(evaluator.hasPermission(authenticationMock, "instance", "join"));
+        assertTrue(evaluator.hasPermission(authenticationMock, "instance", "non-existing"));
+        assertTrue(evaluator.hasPermission(authenticationMock, 123L, "non-existing", "view"));
     }
 }

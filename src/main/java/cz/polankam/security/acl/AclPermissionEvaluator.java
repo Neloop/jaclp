@@ -74,7 +74,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                 continue;
             }
 
-            List<PermissionRule> rules = findMatching(role.getPermissionRules(targetResource), targetResource, permissionString);
+            List<PermissionRule> rules = findMatching(role.getPermissionRules(), targetResource, permissionString);
             Optional<PermissionRule> firstRule = rules.stream().findFirst();
             if (firstRule.isPresent()) {
                 if (firstRule.get().getCondition() != null) {
@@ -118,7 +118,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                 continue;
             }
 
-            List<PermissionRule> rules = findMatching(role.getPermissionRules(targetType), targetType, permissionString);
+            List<PermissionRule> rules = findMatching(role.getPermissionRules(), targetType, permissionString);
             Optional<PermissionRule> firstRule = rules.stream().findFirst();
             if (firstRule.isPresent()) {
                 // at least one matching rule was found
