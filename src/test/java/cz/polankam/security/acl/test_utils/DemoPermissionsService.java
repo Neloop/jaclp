@@ -24,6 +24,7 @@ public class DemoPermissionsService implements IPermissionsService {
     public DemoPermissionsService() {
         Role user = new Role("USER");
         Role admin = new Role("ADMIN", user);
+        Role superadmin = new Role("SUPERADMIN");
 
         user.addPermissionRules(
                 true,
@@ -61,8 +62,13 @@ public class DemoPermissionsService implements IPermissionsService {
                 "join" // not allowed for testing purposes
         );
 
+        superadmin.addPermissionRules(
+            true, "*", "*" // superadmin can do everything... literally
+        );
+
         roles.put(user.getName(), user);
         roles.put(admin.getName(), admin);
+        roles.put(superadmin.getName(), superadmin);
         resources.put("group", new DemoGroupRepository());
     }
 

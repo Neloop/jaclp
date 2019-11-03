@@ -68,4 +68,11 @@ class AclPermissionEvaluatorTest {
         assertFalse(evaluator.hasPermission(authenticationMock, "instance", "join"));
         assertFalse(evaluator.hasPermission(authenticationMock, 123L, "non-existing", "view"));
     }
+
+    @Test
+    void hasPermission_Superadmin() {
+        when(authenticationMock.getPrincipal()).thenReturn(new DemoUser("superadmin", "SUPERADMIN"));
+
+        // TODO
+    }
 }

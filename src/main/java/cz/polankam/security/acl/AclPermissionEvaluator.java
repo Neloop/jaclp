@@ -82,6 +82,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                         "' and action '" + permissionString + "' was used in non-ABAC context");
                 }
 
+                // at least one matching rule was found, allow it or not
                 return firstRule.get().isAllowed();
             }
         }
@@ -120,19 +121,19 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             List<PermissionRule> rules = findMatching(role.getPermissionRules(targetType), targetType, permissionString);
             Optional<PermissionRule> firstRule = rules.stream().findFirst();
             if (firstRule.isPresent()) {
+                // at least one matching rule was found
                 PermissionRule rule = firstRule.get();
-
-                // we have to find resource repository, because we were
-                // given resource identification, after that resource is
-                // acquired from the repository and evaluated in specified
-                // condition
-                IResourceRepository repository = permissionsService.getResource(rule.getResource());
-                Optional<Object> resource = repository.findById(targetId);
-                if (!resource.isPresent()) {
-                    throw new ResourceNotFoundException("Resource with identification '" + targetId + "' not found");
-                }
-
                 if (rule.getCondition() != null) {
+                    // we have to find resource repository, because we were
+                    // given resource identification, after that resource is
+                    // acquired from the repository and evaluated in specified
+                    // condition
+                    IResourceRepository repository = permissionsService.getResource(rule.getResource());
+                    Optional<Object> resource = repository.findById(targetId);
+                    if (!resource.isPresent()) {
+                        throw new ResourceNotFoundException("Resource with identification '" + targetId + "' not found");
+                    }
+
                     // condition was given, so evaluate it
                     if (rule.getCondition().test(user, resource.get())) {
                         return rule.isAllowed();
@@ -143,7 +144,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                     // be truthy and grant access to resource
                 } else {
                     // condition was not given, so the behaviour is the same
-                    // as for regular id-less permission check, allow it
+                    // as for regular id-less permission check, allow it or not
                     return rule.isAllowed();
                 }
             }
