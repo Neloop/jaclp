@@ -46,6 +46,17 @@ userRole.addPermissionRules(
 );
 ```
 
+**Define permissions with wildcards:**
+
+There is one defined wildcard, the asterisk, it can be used as a resource or as an action. If asterisk is used all resources or actions used in `hasPermission` calls are matched against specified permission.
+
+```java
+Role superadminRole = new Role("superadmin");
+superadminRole.addPermissionRules(
+    true, "*", "*"
+);
+```
+
 **Define complex ABAC permissions on resource:**
 
 ```java
