@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * Created by Martin Polanka
  */
-class TrueCondition<T> implements PermissionCondition<T> {
+final class TrueCondition<T> implements PermissionCondition<T> {
 
     @Override
     public boolean test(UserDetails user, T resource) {

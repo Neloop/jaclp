@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * Created by Martin Polanka
  */
-class OrCondition<T> implements PermissionCondition<T> {
+final class OrCondition<T> implements PermissionCondition<T> {
 
     /**
      * Array of conditions which will be evaluated on testing.

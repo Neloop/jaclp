@@ -10,7 +10,7 @@ import java.util.*;
  *
  * Created by Martin Polanka
  */
-public class Role {
+public final class Role {
 
     /** Name of the role */
     private String name;
