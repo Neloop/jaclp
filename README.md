@@ -116,24 +116,18 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 /**
  * Enable and set method security, most importantly define custom behavior for
  * <code>hasPermission</code> authorization methods within authorize
- * annotations. Proxy target class property has to be allowed, otherwise
- * transactions on the permission evaluator will not work.
+ * annotations.
  */
 @Configuration
+@Import(JaclpSpringConfiguration.class)
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
-    private AclPermissionEvaluator permissionEvaluator;
+    private final AclPermissionEvaluator permissionEvaluator;
 
     @Autowired
-    public MethodSecurityConfig(IPermissionsService permissionsService) {
-        permissionEvaluator = new AclPermissionEvaluator(permissionsService);
-    }
-
-
-    @Bean
-    public AuthorizatorService authorizatorService() {
-        return new AuthorizatorService(permissionEvaluator);
+    public MethodSecurityConfig(@Lazy AclPermissionEvaluator permissionEvaluator) {
+        this.permissionEvaluator = permissionEvaluator;
     }
 
     @Override
@@ -144,7 +138,6 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
         return handler;
     }
 }
-
 ```
 
 ### Permission Service Example
