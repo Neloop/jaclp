@@ -6,7 +6,8 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -20,13 +21,14 @@ import java.util.stream.Collectors;
  * authorize annotations. The implementation is based on the user roles and
  * permission rules created by the {@link IPermissionsService} which has to be
  * given at construction.
- *
+ * <p>
  * Created by Martin Polanka
  */
-@Transactional(rollbackFor = Exception.class)
 public class AclPermissionEvaluator implements PermissionEvaluator {
 
-    /** Wildcard which can be used when specifying resource or action */
+    /**
+     * Wildcard which can be used when specifying resource or action
+     */
     public static final String WILDCARD = "*";
 
 
@@ -34,31 +36,85 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * Permission service which contains definition of roles and resource
      * repositories used for evaluation.
      */
-    private IPermissionsService permissionsService;
+    private final IPermissionsService permissionsService;
+    /**
+     * Transaction manager.
+     */
+    private final PlatformTransactionManager transactionManager;
+    /**
+     * Transaction template for this class.
+     */
+    private final TransactionTemplate transactionTemplate;
 
     /**
      * Constructor.
+     *
      * @param permissionsService roles definition service
+     * @param transactionManager transaction manager, if null transactions will not be used
      */
-    public AclPermissionEvaluator(IPermissionsService permissionsService) {
+    public AclPermissionEvaluator(IPermissionsService permissionsService,
+                                  PlatformTransactionManager transactionManager) {
         this.permissionsService = permissionsService;
+        this.transactionManager = transactionManager;
+        // create transaction template for this class
+        if (transactionManager != null) {
+            this.transactionTemplate = new TransactionTemplate(transactionManager);
+            this.transactionTemplate.setReadOnly(true);
+        } else {
+            this.transactionTemplate = null;
+        }
     }
 
 
     /**
      * Determine if the given user with defined roles can perform action on the
      * resource.
-     * @param authentication authentication containing currently logged user
+     *
+     * @param authentication     authentication containing currently logged user
      * @param targetDomainObject textual representation of the resource
-     * @param permission textual representation of the action on the resource
+     * @param permission         textual representation of the action on the resource
      * @return true if user can perform the action on the given resource
      */
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+        if (transactionTemplate == null) {
+            return hasPermissionInternal(authentication, targetDomainObject, permission);
+        } else {
+            Boolean result = transactionTemplate.<Boolean>execute(status ->
+                    hasPermissionInternal(authentication, targetDomainObject, permission));
+            return result != null && result;
+        }
+    }
+
+
+    /**
+     * Determine if the given user with defined roles can perform action on the
+     * resource with given identification.
+     *
+     * @param authentication authentication containing currently logged user
+     * @param targetId       identification of the resource which should be acquired
+     * @param targetType     textual representation of the resource
+     * @param permission     textual representation of the action on the resource
+     * @return true if user can perform the action on the given resource
+     */
+    @Override
+    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+        if (transactionTemplate == null) {
+            return hasPermissionInternal(authentication, targetId, targetType, permission);
+        } else {
+            Boolean result = transactionTemplate.<Boolean>execute(status ->
+                    hasPermissionInternal(authentication, targetId, targetType, permission));
+            return result != null && result;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    private boolean hasPermissionInternal(Authentication authentication, Object targetDomainObject, Object permission) {
         if (authentication == null ||
                 !(authentication.getPrincipal() instanceof UserDetails) ||
                 !(targetDomainObject instanceof String) ||
-                !(permission instanceof String)){
+                !(permission instanceof String)) {
             return false;
         }
 
@@ -78,8 +134,8 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
             Optional<PermissionRule> firstRule = rules.stream().findFirst();
             if (firstRule.isPresent()) {
                 if (firstRule.get().getCondition() != null) {
-                    throw new PermissionException("ABAC permission rule for resource '" + targetResource + 
-                        "' and action '" + permissionString + "' was used in non-ABAC context");
+                    throw new PermissionException("ABAC permission rule for resource '" + targetResource +
+                            "' and action '" + permissionString + "' was used in non-ABAC context");
                 }
 
                 // at least one matching rule was found, allow it or not
@@ -89,21 +145,10 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
         return false;
     }
 
-
-    /**
-     * Determine if the given user with defined roles can perform action on the
-     * resource with given identification.
-     * @param authentication authentication containing currently logged user
-     * @param targetId identification of the resource which should be acquired
-     * @param targetType textual representation of the resource
-     * @param permission textual representation of the action on the resource
-     * @return true if user can perform the action on the given resource
-     */
-    @Override
-    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+    private boolean hasPermissionInternal(Authentication authentication, Serializable targetId, String targetType, Object permission) {
         if (authentication == null ||
                 !(authentication.getPrincipal() instanceof UserDetails) ||
-                !(permission instanceof String)){
+                !(permission instanceof String)) {
             return false;
         }
 
@@ -154,15 +199,16 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     /**
      * Find all matching rules with given resource and action.
-     * @param rules source rules
+     *
+     * @param rules    source rules
      * @param resource resource which should be found
-     * @param action action which should be found
+     * @param action   action which should be found
      * @return filtered collection of matching rules
      */
     private List<PermissionRule> findMatching(Collection<PermissionRule> rules, String resource, String action) {
-        return rules.stream().filter(rule -> 
-            (Objects.equals(rule.getResource(), resource) || Objects.equals(rule.getResource(), WILDCARD)) && 
-            (Objects.equals(rule.getAction(), action) || Objects.equals(rule.getAction(), WILDCARD))
+        return rules.stream().filter(rule ->
+                (Objects.equals(rule.getResource(), resource) || Objects.equals(rule.getResource(), WILDCARD)) &&
+                        (Objects.equals(rule.getAction(), action) || Objects.equals(rule.getAction(), WILDCARD))
         ).collect(Collectors.toList());
     }
 }

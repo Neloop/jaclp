@@ -19,7 +19,7 @@ class AclPermissionEvaluatorTest {
     @BeforeEach
     void setUp() {
         permissionsService = new DemoPermissionsService();
-        evaluator = new AclPermissionEvaluator(permissionsService);
+        evaluator = new AclPermissionEvaluator(permissionsService, null);
         authenticationMock = mock(Authentication.class);
     }
 
