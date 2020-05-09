@@ -93,9 +93,20 @@ public GroupDetailDTO getGroupDetail(@PathVariable long id) {
 }
 ```
 
+## Example Project
+
+There is example project which demonstrates integration of JACLP to the Spring 
+Boot, Spring Data JPA and Spring Security stack. This example is located in
+separated repository [jaclp-demo](https://github.com/Neloop/jaclp-demo).
+
 ## Integration
 
-There are two steps which needs to be done after installing `jaclp` dependency. Former is implement permissions configuration, latter defining `PermissionService`. Configuration is used for defining permission expression evaluator and integrate it in your project. Permission service should implement `IPermissionService` interface and define all user roles and their permissions within your project.
+There are two steps which needs to be done after installing `jaclp` dependency. 
+Former is implement permissions configuration, latter defining 
+`PermissionService`. Configuration is used for defining permission expression 
+evaluator and integrate it in your project. Permission service should implement 
+`IPermissionService` interface and define all user roles and their permissions 
+within your project.
 
 ### Permission Configuration Example
 
@@ -125,6 +136,11 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
     private final AclPermissionEvaluator permissionEvaluator;
 
+    /**
+     * Note: @Lazy annotation is very important here, it protects evaluator and
+     * potential autowired classes from not being able to be processed by
+     * BeanPostProcessor, which handles for example Spring AOP.
+     */
     @Autowired
     public MethodSecurityConfig(@Lazy AclPermissionEvaluator permissionEvaluator) {
         this.permissionEvaluator = permissionEvaluator;
