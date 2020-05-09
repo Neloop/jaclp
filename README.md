@@ -116,7 +116,8 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 /**
  * Enable and set method security, most importantly define custom behavior for
  * <code>hasPermission</code> authorization methods within authorize
- * annotations.
+ * annotations. Proxy target class property has to be allowed, otherwise
+ * transactions on the permission evaluator will not work.
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
