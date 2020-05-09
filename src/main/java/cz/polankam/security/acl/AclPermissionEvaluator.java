@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * Created by Martin Polanka
  */
 @Transactional(rollbackFor = Exception.class)
-public final class AclPermissionEvaluator implements PermissionEvaluator {
+public class AclPermissionEvaluator implements PermissionEvaluator {
 
     /** Wildcard which can be used when specifying resource or action */
     public static final String WILDCARD = "*";
