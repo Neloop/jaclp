@@ -206,9 +206,12 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      * @return filtered collection of matching rules
      */
     private List<PermissionRule> findMatching(Collection<PermissionRule> rules, String resource, String action) {
-        return rules.stream().filter(rule ->
-                (Objects.equals(rule.getResource(), resource) || Objects.equals(rule.getResource(), WILDCARD)) &&
-                        (Objects.equals(rule.getAction(), action) || Objects.equals(rule.getAction(), WILDCARD))
-        ).collect(Collectors.toList());
+        return rules.stream().filter(rule -> {
+            boolean resourceMatch = Objects.equals(rule.getResource(), resource) ||
+                    Objects.equals(rule.getResource(), WILDCARD);
+            boolean actionsMatch = rule.getActions().stream().anyMatch(ruleAction ->
+                    Objects.equals(ruleAction, action) || Objects.equals(ruleAction, WILDCARD));
+            return resourceMatch && actionsMatch;
+        }).collect(Collectors.toList());
     }
 }

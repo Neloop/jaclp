@@ -22,26 +22,24 @@ class RoleTest {
     @Test
     void addPermissionRules() {
         Role role = new Role("role");
-        role.addPermissionRules(true, "res1", new String[] {"action1", "action2"});
-        role.addPermissionRules(false, "res2", new String[] {"action3"});
+        role.addPermissionRules(true, "res1", new String[]{"action1", "action2"});
+        role.addPermissionRules(false, "res2", new String[]{"action3"});
 
         List<PermissionRule> rules = role.getPermissionRules();
-        assertEquals(3, rules.size());
+        assertEquals(2, rules.size());
 
         PermissionRule rule1 = rules.get(0);
         assertTrue(rule1.isAllowed());
         assertEquals("res1", rule1.getResource());
-        assertEquals("action1", rule1.getAction());
+        assertEquals(2, rule1.getActions().size());
+        assertEquals("action1", rule1.getActions().get(0));
+        assertEquals("action2", rule1.getActions().get(1));
 
         PermissionRule rule2 = rules.get(1);
-        assertTrue(rule2.isAllowed());
-        assertEquals("res1", rule2.getResource());
-        assertEquals("action2", rule2.getAction());
-
-        PermissionRule rule3 = rules.get(2);
-        assertFalse(rule3.isAllowed());
-        assertEquals("res2", rule3.getResource());
-        assertEquals("action3", rule3.getAction());
+        assertFalse(rule2.isAllowed());
+        assertEquals("res2", rule2.getResource());
+        assertEquals(1, rule2.getActions().size());
+        assertEquals("action3", rule2.getActions().get(0));
 
     }
 
@@ -51,29 +49,26 @@ class RoleTest {
         PermissionCondition condition2 = (user, condition) -> false;
 
         Role role = new Role("role");
-        role.addPermissionRules(true, "res1", new String[] {"action1", "action2"}, condition1);
-        role.addPermissionRules(false, "res2", new String[] {"action3"}, condition2);
+        role.addPermissionRules(true, "res1", new String[]{"action1", "action2"}, condition1);
+        role.addPermissionRules(false, "res2", new String[]{"action3"}, condition2);
 
         List<PermissionRule> rules = role.getPermissionRules();
-        assertEquals(3, rules.size());
+        assertEquals(2, rules.size());
 
         PermissionRule rule1 = rules.get(0);
         assertTrue(rule1.isAllowed());
         assertEquals("res1", rule1.getResource());
-        assertEquals("action1", rule1.getAction());
+        assertEquals(2, rule1.getActions().size());
+        assertEquals("action1", rule1.getActions().get(0));
+        assertEquals("action2", rule1.getActions().get(1));
         assertEquals(condition1, rule1.getCondition());
 
         PermissionRule rule2 = rules.get(1);
-        assertTrue(rule2.isAllowed());
-        assertEquals("res1", rule2.getResource());
-        assertEquals("action2", rule2.getAction());
-        assertEquals(condition1, rule2.getCondition());
-
-        PermissionRule rule3 = rules.get(2);
-        assertFalse(rule3.isAllowed());
-        assertEquals("res2", rule3.getResource());
-        assertEquals("action3", rule3.getAction());
-        assertEquals(condition2, rule3.getCondition());
+        assertFalse(rule2.isAllowed());
+        assertEquals("res2", rule2.getResource());
+        assertEquals(1, rule2.getActions().size());
+        assertEquals("action3", rule2.getActions().get(0));
+        assertEquals(condition2, rule2.getCondition());
     }
 
     @Test
@@ -86,109 +81,100 @@ class RoleTest {
         role.addPermissionRules(false, "res2", condition2, "action3");
 
         List<PermissionRule> rules = role.getPermissionRules();
-        assertEquals(3, rules.size());
+        assertEquals(2, rules.size());
 
         PermissionRule rule1 = rules.get(0);
         assertTrue(rule1.isAllowed());
         assertEquals("res1", rule1.getResource());
-        assertEquals("action1", rule1.getAction());
+        assertEquals(2, rule1.getActions().size());
+        assertEquals("action1", rule1.getActions().get(0));
+        assertEquals("action2", rule1.getActions().get(1));
         assertEquals(condition1, rule1.getCondition());
 
         PermissionRule rule2 = rules.get(1);
-        assertTrue(rule2.isAllowed());
-        assertEquals("res1", rule2.getResource());
-        assertEquals("action2", rule2.getAction());
-        assertEquals(condition1, rule2.getCondition());
-
-        PermissionRule rule3 = rules.get(2);
-        assertFalse(rule3.isAllowed());
-        assertEquals("res2", rule3.getResource());
-        assertEquals("action3", rule3.getAction());
-        assertEquals(condition2, rule3.getCondition());
+        assertFalse(rule2.isAllowed());
+        assertEquals("res2", rule2.getResource());
+        assertEquals(1, rule2.getActions().size());
+        assertEquals("action3", rule2.getActions().get(0));
+        assertEquals(condition2, rule2.getCondition());
     }
 
     @Test
     void getPermissionRulesFromParent() {
         Role parent = new Role("parent");
-        parent.addPermissionRules(false, "res2", new String[] {"action3"});
+        parent.addPermissionRules(false, "res2", new String[]{"action3"});
 
         Role role = new Role("role", parent);
-        role.addPermissionRules(true, "res1", new String[] {"action1", "action2"});
+        role.addPermissionRules(true, "res1", new String[]{"action1", "action2"});
 
         List<PermissionRule> rules = role.getPermissionRules();
-        assertEquals(3, rules.size());
+        assertEquals(2, rules.size());
 
         PermissionRule rule1 = rules.get(0);
         assertTrue(rule1.isAllowed());
         assertEquals("res1", rule1.getResource());
-        assertEquals("action1", rule1.getAction());
+        assertEquals(2, rule1.getActions().size());
+        assertEquals("action1", rule1.getActions().get(0));
+        assertEquals("action2", rule1.getActions().get(1));
 
         PermissionRule rule2 = rules.get(1);
-        assertTrue(rule2.isAllowed());
-        assertEquals("res1", rule2.getResource());
-        assertEquals("action2", rule2.getAction());
-
-        PermissionRule rule3 = rules.get(2);
-        assertFalse(rule3.isAllowed());
-        assertEquals("res2", rule3.getResource());
-        assertEquals("action3", rule3.getAction());
+        assertFalse(rule2.isAllowed());
+        assertEquals("res2", rule2.getResource());
+        assertEquals(1, rule2.getActions().size());
+        assertEquals("action3", rule2.getActions().get(0));
     }
 
     @Test
     void getPermissionRulesByResource() {
         Role role = new Role("role");
-        role.addPermissionRules(true, "res1", new String[] {"action1", "action2"});
-        role.addPermissionRules(false, "res2", new String[] {"action3"});
+        role.addPermissionRules(true, "res1", new String[]{"action1", "action2"});
+        role.addPermissionRules(false, "res2", new String[]{"action3"});
 
         List<PermissionRule> res1Rules = role.getPermissionRules("res1");
-        assertEquals(2, res1Rules.size());
+        assertEquals(1, res1Rules.size());
 
         PermissionRule rule1 = res1Rules.get(0);
         assertTrue(rule1.isAllowed());
         assertEquals("res1", rule1.getResource());
-        assertEquals("action1", rule1.getAction());
-
-        PermissionRule rule2 = res1Rules.get(1);
-        assertTrue(rule2.isAllowed());
-        assertEquals("res1", rule2.getResource());
-        assertEquals("action2", rule2.getAction());
+        assertEquals(2, rule1.getActions().size());
+        assertEquals("action1", rule1.getActions().get(0));
+        assertEquals("action2", rule1.getActions().get(1));
 
         List<PermissionRule> res2Rules = role.getPermissionRules("res2");
         assertEquals(1, res2Rules.size());
 
-        PermissionRule rule3 = res2Rules.get(0);
-        assertFalse(rule3.isAllowed());
-        assertEquals("res2", rule3.getResource());
-        assertEquals("action3", rule3.getAction());
+        PermissionRule rule2 = res2Rules.get(0);
+        assertFalse(rule2.isAllowed());
+        assertEquals("res2", rule2.getResource());
+        assertEquals(1, rule2.getActions().size());
+        assertEquals("action3", rule2.getActions().get(0));
     }
 
     @Test
     void getPermissionRulesByResourceFromParent() {
         Role parent = new Role("parent");
-        parent.addPermissionRules(false, "res2", new String[] {"action3"});
+        parent.addPermissionRules(false, "res2", new String[]{"action3"});
 
         Role role = new Role("role", parent);
-        role.addPermissionRules(true, "res1", new String[] {"action1", "action2"});
+        role.addPermissionRules(true, "res1", new String[]{"action1", "action2"});
 
         List<PermissionRule> res1Rules = role.getPermissionRules("res1");
-        assertEquals(2, res1Rules.size());
+        assertEquals(1, res1Rules.size());
 
         PermissionRule rule1 = res1Rules.get(0);
         assertTrue(rule1.isAllowed());
         assertEquals("res1", rule1.getResource());
-        assertEquals("action1", rule1.getAction());
-
-        PermissionRule rule2 = res1Rules.get(1);
-        assertTrue(rule2.isAllowed());
-        assertEquals("res1", rule2.getResource());
-        assertEquals("action2", rule2.getAction());
+        assertEquals(2, rule1.getActions().size());
+        assertEquals("action1", rule1.getActions().get(0));
+        assertEquals("action2", rule1.getActions().get(1));
 
         List<PermissionRule> res2Rules = role.getPermissionRules("res2");
         assertEquals(1, res2Rules.size());
 
-        PermissionRule rule3 = res2Rules.get(0);
-        assertFalse(rule3.isAllowed());
-        assertEquals("res2", rule3.getResource());
-        assertEquals("action3", rule3.getAction());
+        PermissionRule rule2 = res2Rules.get(0);
+        assertFalse(rule2.isAllowed());
+        assertEquals("res2", rule2.getResource());
+        assertEquals(1, rule2.getActions().size());
+        assertEquals("action3", rule2.getActions().get(0));
     }
 }
