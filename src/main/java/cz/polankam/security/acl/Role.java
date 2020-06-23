@@ -84,6 +84,16 @@ public final class Role {
      * @return this
      */
     public Role addPermissionRules(PermissionRule... rules) {
+        return addPermissionRules(Arrays.asList(rules));
+    }
+
+    /**
+     * Add given permission rules structures to this role.
+     *
+     * @param rules list of rules
+     * @return this
+     */
+    public Role addPermissionRules(List<PermissionRule> rules) {
         for (PermissionRule rule : rules) {
             initializeResource(rule.getResource());
             permissionRules.get(rule.getResource()).add(rule);
