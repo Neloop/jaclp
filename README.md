@@ -47,7 +47,7 @@ Role userRole = RoleBuilder.create("user")
 ```java
 Role userRole = RoleBuilder.create("user")
         .addAllowedRule("group",
-                (user, group) -> group.isPublic(), 
+                (UserDetails user, GroupEntity group) -> group.isPublic(), 
                 "viewDetail")
         .build();
 ```
