@@ -26,24 +26,19 @@ The main thing in usage of `jaclp` library is definition of permission itself. T
 **Define role-based ACL permissions:**
 
 ```java
-Role userRole = new Role("user");
-userRole.addPermissionRules(
-    true,
-    "group",
-    "viewAll"
-);
+Role userRole = RoleBuilder.create("user")
+        .addAllowedRule("group", "viewAll")
+        .build();
 ```
 
 **Define simple ABAC permissions on resource:**
 
 ```java
-Role userRole = new Role("user");
-userRole.addPermissionRules(
-    true,
-    "group",
-    new String[] {"viewDetail"},
-    (user, group) -> group.isPublic()
-);
+Role userRole = RoleBuilder.create("user")
+        .addAllowedRule("group",
+                (user, group) -> group.isPublic(), 
+                "viewDetail")
+        .build();
 ```
 
 **Define permissions with wildcards:**
@@ -51,28 +46,26 @@ userRole.addPermissionRules(
 There is one defined wildcard, the asterisk, it can be used as a resource or as an action. If asterisk is used all resources or actions used in `hasPermission` calls are matched against specified permission.
 
 ```java
-Role superadminRole = new Role("superadmin");
-superadminRole.addPermissionRules(
-    true, "*", "*"
-);
+Role superadminRole = RoleBuilder.create("superadmin")
+        .addAllowedRule("*", "*")
+        .build();
 ```
 
 **Define complex ABAC permissions on resource:**
 
 ```java
-Role userRole = new Role("user");
-userRole.addPermissionRules(
-    true,
-    "group",
-    new String[] {"viewStats"},
-    ConditionsFactory::and(
-        (user, group) -> group.isPublic(),
-        ConditionsFactory::or(
-            GroupConditions::isVisibleFromNow(user, group),
-            GroupConditions::isSuperGlobal(user, group)
-        )
-    )
-);
+Role userRole = RoleBuilder.create("user")
+        .addAllowedRule("group")
+            .addAction("viewStats")
+            .condition(ConditionsFactory.and(
+                    (UserDetails user, GroupEntity group) -> group.isPublic(),
+                    ConditionsFactory.or(
+                            GroupConditions::isVisibleFromNow,
+                            GroupConditions::isSuperGlobal
+                    )
+            ))
+            .endRule()
+        .build();
 ```
 
 The things above are related to specifying permissions, the next thing is, we need to use the permissions. The permissions are used whenever Spring Security permission expression `hasPermission` is called. Therefore we can use this library in `Authorize` annotations which ideally would be located on all public endpoints.
@@ -95,7 +88,7 @@ public GroupDetailDTO getGroupDetail(@PathVariable long id) {
 
 ## Example Project
 
-There is example project which demonstrates integration of JACLP to the Spring 
+There is example project which demonstrates integration of JACLP into the Spring 
 Boot, Spring Data JPA and Spring Security stack. This example is located in
 separated repository [jaclp-demo](https://github.com/Neloop/jaclp-demo).
 
