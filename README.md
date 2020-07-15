@@ -5,11 +5,17 @@
 [![Maven Central Release](https://img.shields.io/maven-central/v/cz.polankam.security.acl/jaclp?color=orange)](https://mvnrepository.com/artifact/cz.polankam.security.acl/jaclp)
 [![GitHub Release](https://img.shields.io/github/release/neloop/jaclp.svg)](https://github.com/Neloop/jaclp/releases)
 
-**JACLP: ACL Permission library for Spring Security** introduces static _ACL-based_ role permission system with a touch of _ABAC_ (Attribute-based access control) over resources. It is integrated within Spring Security and its expression based permission control which might be used from `Authorize`-like annotations over endpoints or generally methods in components.
+**JACLP: ACL Permission library for Spring Security** introduces static 
+_ACL-based_ role permission system with a touch of _ABAC_ (Attribute-based 
+access control) over resources. It is integrated within Spring Security and its 
+expression based permission control which might be used from `Authorize`-like 
+annotations over endpoints or generally methods in services.
 
 ## Installation
 
-Installation of the library is possible through maven dependencies (Maven Central):
+Installation of the library is possible through maven dependencies, it is hosted
+on [Maven Central](https://mvnrepository.com/artifact/cz.polankam.security.acl/jaclp).
+Be sure to fill in the latest version:
 
 ```xml
 <dependency>
@@ -21,7 +27,12 @@ Installation of the library is possible through maven dependencies (Maven Centra
 
 ## Example Usage
 
-The main thing in usage of `jaclp` library is definition of permission itself. There are two ways how to do this, either using role-based _ACL_, or _ABAC_ authorization. Role-based _ACL_ defines if action is allowed on resource or not. _ABAC_ in this implementation is created on top of ACL and adds condition to the authorization. Condition is resource-specific action which has to be checked against particular resource object obtained from resource repository. Examples of simple and complex usage of _ACL_ and _ABAC_ condition follows.
+With `jaclp` library you can define roles with _ACL_ permissions or _ABAC_ 
+authorization. Role-based _ACL_ defines if action is allowed on resource or not.
+_ABAC_ in this implementation is created on top of ACL and adds condition to the
+authorization. Condition is resource-specific action which has to be checked
+against particular resource object obtained from resource repository. Examples
+of simple and complex definition of _ACL_ and _ABAC_ permissions follows.
 
 **Define role-based ACL permissions:**
 
@@ -43,7 +54,9 @@ Role userRole = RoleBuilder.create("user")
 
 **Define permissions with wildcards:**
 
-There is one defined wildcard, the asterisk, it can be used as a resource or as an action. If asterisk is used all resources or actions used in `hasPermission` calls are matched against specified permission.
+There is one defined wildcard, the asterisk, it can be used as a resource or as 
+an action. If asterisk is used all resources or actions used in `hasPermission` 
+calls are matched against specified permission.
 
 ```java
 Role superadminRole = RoleBuilder.create("superadmin")
@@ -68,9 +81,15 @@ Role userRole = RoleBuilder.create("user")
         .build();
 ```
 
-The things above are related to specifying permissions, the next thing is, we need to use the permissions. The permissions are used whenever Spring Security permission expression `hasPermission` is called. Therefore we can use this library in `Authorize` annotations which ideally would be located on all public endpoints.
+After you defined roles used within your application, the next this is to use
+them to actually protect some endpoints or internal APIs. After successful
+[integration](#integration-into-spring-application) of `jaclp` library to Spring
+application, permissions are used whenever Spring Security permission expression
+`hasPermission` is called. Therefore we can use permissions in `Authorize`
+annotations, these annotations should be preferably placed on public endpoints
+of your application.
 
-**Sample GET group endpoints:**
+**Sample GET endpoints using permission evaluation:**
 
 ```java
 @GetMapping("groups")
@@ -88,18 +107,18 @@ public GroupDetailDTO getGroupDetail(@PathVariable long id) {
 
 ## Example Project
 
-There is example project which demonstrates integration of JACLP into the Spring 
-Boot, Spring Data JPA and Spring Security stack. This example is located in
-separated repository [jaclp-demo](https://github.com/Neloop/jaclp-demo).
+There is example project which demonstrates usage and integration of JACLP into
+the Spring Boot, Spring Data JPA and Spring Security stack. This example is
+located in separated repository [jaclp-demo](https://github.com/Neloop/jaclp-demo).
 
-## Integration
+## Integration into Spring Application
 
-There are two steps which needs to be done after installing `jaclp` dependency. 
-Former is implement permissions configuration, latter defining 
-`PermissionService`. Configuration is used for defining permission expression 
-evaluator and integrate it in your project. Permission service should implement 
-`IPermissionService` interface and define all user roles and their permissions 
-within your project.
+There are two steps which needs to be done after installing `jaclp` dependency.
+Former is ideally import pre-defined permissions configuration, latter defining
+`PermissionService`. Configuration is used for creating permission expression
+evaluator and integrate it in your project. Permission service on the other hand
+should implement `IPermissionService` interface and define all user roles and
+their permissions within your project.
 
 ### Permission Configuration Example
 
@@ -151,7 +170,13 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
 ### Permission Service Example
 
-Following implementation is only example and it should be different for every project. The important thing is to implement `getRole()` and `getResource()` methods to comply `IPermissionService` interface. Get role method should return `Role` object which contains defined permission rules for the given role identification. Get resource method is used for _ABAC_ authorization and should return resource repository for given resource identification. If project does not use _ABAC_ authorization `getResource()` can return empty list.
+Following implementation is only example and it should be different for every 
+project. The important thing is to implement `getRole()` and `getResource()` 
+methods to comply with `IPermissionService` interface. Get role method should 
+return  `Role` object which contains defined permission rules for the given role 
+identification. Get resource method is used for _ABAC_ authorization and should 
+return resource repository for given resource identification. If project does 
+not use _ABAC_ authorization `getResource()` can return empty list.
 
 ```java
 package app.security.acl;
