@@ -1,9 +1,0 @@
-language: java
-jdk:
-  - oraclejdk11
-  - openjdk8
-  - openjdk9
-  - openjdk10
-  - openjdk11
-  - openjdk12
-  - openjdk13
