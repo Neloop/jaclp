@@ -1,0 +1,19 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        java: [8, 9, 10, 11, 12, 13]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - run: mvn test -B

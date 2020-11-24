@@ -1,6 +1,6 @@
 # JACLP: Java ACL Permissions library
 
-[![Build Status](https://travis-ci.org/Neloop/jaclp.svg?branch=master)](https://travis-ci.org/Neloop/jaclp)
+[![Build Status](https://github.com/Neloop/jaclp/workflows/CI/badge.svg)](https://github.com/Neloop/jaclp/actions)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Neloop/jaclp/blob/master/LICENSE)
 [![Maven Central Release](https://img.shields.io/maven-central/v/cz.polankam.security.acl/jaclp?color=orange)](https://mvnrepository.com/artifact/cz.polankam.security.acl/jaclp)
 [![GitHub Release](https://img.shields.io/github/release/neloop/jaclp.svg)](https://github.com/Neloop/jaclp/releases)
