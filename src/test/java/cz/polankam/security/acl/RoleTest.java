@@ -45,8 +45,8 @@ class RoleTest {
 
     @Test
     void addPermissionRulesCondition() {
-        PermissionCondition condition1 = (user, condition) -> true;
-        PermissionCondition condition2 = (user, condition) -> false;
+        PermissionCondition<Object> condition1 = (user, condition) -> true;
+        PermissionCondition<Object> condition2 = (user, condition) -> false;
 
         Role role = new Role("role");
         role.addPermissionRules(true, "res1", new String[]{"action1", "action2"}, condition1);
@@ -73,8 +73,8 @@ class RoleTest {
 
     @Test
     void addPermissionRulesConditionVarargs() {
-        PermissionCondition condition1 = (user, condition) -> true;
-        PermissionCondition condition2 = (user, condition) -> false;
+        PermissionCondition<Object> condition1 = (user, condition) -> true;
+        PermissionCondition<Object> condition2 = (user, condition) -> false;
 
         Role role = new Role("role");
         role.addPermissionRules(true, "res1", condition1, "action1", "action2");

@@ -38,10 +38,6 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
      */
     private final IPermissionsService permissionsService;
     /**
-     * Transaction manager.
-     */
-    private final PlatformTransactionManager transactionManager;
-    /**
      * Transaction template for this class.
      */
     private final TransactionTemplate transactionTemplate;
@@ -55,7 +51,6 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
     public AclPermissionEvaluator(IPermissionsService permissionsService,
                                   PlatformTransactionManager transactionManager) {
         this.permissionsService = permissionsService;
-        this.transactionManager = transactionManager;
         // create transaction template for this class
         if (transactionManager != null) {
             this.transactionTemplate = new TransactionTemplate(transactionManager);

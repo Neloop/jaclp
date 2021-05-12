@@ -12,7 +12,7 @@ class PermissionRuleTest {
 
     @Test
     void testSingleAction() {
-        PermissionCondition condition = (user, resource) -> true;
+        PermissionCondition<Object> condition = (user, resource) -> true;
         PermissionRule rule = new PermissionRule(true, "resource", "action", condition);
 
         assertTrue(rule.isAllowed());
@@ -24,7 +24,7 @@ class PermissionRuleTest {
 
     @Test
     void testMultipleActions() {
-        PermissionCondition condition = (user, resource) -> true;
+        PermissionCondition<Object> condition = (user, resource) -> true;
         PermissionRule rule = new PermissionRule(true,
                 "resource", Arrays.asList("action1", "action2"), condition);
 

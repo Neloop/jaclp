@@ -32,5 +32,5 @@ public interface IPermissionsService {
      * @param resource textual resource representation
      * @return repository from which resource object can be acquired
      */
-    IResourceRepository getResource(String resource);
+    IResourceRepository<?, ?> getResource(String resource);
 }

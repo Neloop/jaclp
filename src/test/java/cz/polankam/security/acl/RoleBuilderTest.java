@@ -75,8 +75,8 @@ class RoleBuilderTest {
 
     @Test
     void addPermissionRulesCondition() {
-        PermissionCondition condition1 = (user, condition) -> true;
-        PermissionCondition condition2 = (user, condition) -> false;
+        PermissionCondition<Object> condition1 = (user, condition) -> true;
+        PermissionCondition<Object> condition2 = (user, condition) -> false;
 
         Role role = RoleBuilder.create("role")
                 .addAllowedRule("res1", condition1, "action1", "action2")
@@ -104,8 +104,8 @@ class RoleBuilderTest {
 
     @Test
     void addRulesConditionWithPermissionBuilder() {
-        PermissionCondition condition1 = (user, condition) -> true;
-        PermissionCondition condition2 = (user, condition) -> false;
+        PermissionCondition<Object> condition1 = (user, condition) -> true;
+        PermissionCondition<Object> condition2 = (user, condition) -> false;
 
         Role role = RoleBuilder.create("role")
                 .addAllowedRule("res1")
