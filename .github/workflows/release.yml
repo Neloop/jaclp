@@ -1,8 +1,6 @@
 name: Release
 
-on:
-  release:
-    types: [ published ]
+on: workflow_dispatch  # Run workflow manually
 
 jobs:
   release:
@@ -24,7 +22,7 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Publish to Apache Maven Central
-        run: mvn -B deploy
+        run: mvn -B clean deploy
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
