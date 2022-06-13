@@ -17,19 +17,19 @@ public class PermissionRule {
     /**
      * Is this rule allowing access or not allowing
      */
-    private boolean isAllowed;
+    private final boolean isAllowed;
     /**
      * Textual representation of resource of this rule
      */
-    private String resource;
+    private final String resource;
     /**
      * Actions list which this rule allows or not
      */
-    private List<String> actions;
+    private final List<String> actions;
     /**
      * Condition applied to resource object, might be null
      */
-    private PermissionCondition condition;
+    private final PermissionCondition condition;
 
     /**
      * Construct permission rule with given parameters.
@@ -39,7 +39,7 @@ public class PermissionRule {
      * @param action    action for which the rule should be applied
      * @param condition condition applied to resource object, might be null
      */
-    public PermissionRule(boolean isAllowed, String resource, String action, PermissionCondition condition) {
+    public <T> PermissionRule(boolean isAllowed, String resource, String action, PermissionCondition<T> condition) {
         this.isAllowed = isAllowed;
         this.resource = resource;
         this.actions = new ArrayList<>();
@@ -55,7 +55,7 @@ public class PermissionRule {
      * @param actions   list of actions for which the rule should be applied
      * @param condition condition applied to resource object, might be null
      */
-    public PermissionRule(boolean isAllowed, String resource, List<String> actions, PermissionCondition condition) {
+    public <T> PermissionRule(boolean isAllowed, String resource, List<String> actions, PermissionCondition<T> condition) {
         this.isAllowed = isAllowed;
         this.resource = resource;
         this.actions = actions;
@@ -96,7 +96,7 @@ public class PermissionRule {
      *
      * @return condition functional interface
      */
-    public PermissionCondition getCondition() {
+    public PermissionCondition<Object> getCondition() {
         return condition;
     }
 }

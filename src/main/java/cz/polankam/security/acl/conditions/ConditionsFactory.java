@@ -7,6 +7,8 @@ package cz.polankam.security.acl.conditions;
  */
 public class ConditionsFactory {
 
+    private ConditionsFactory() {}
+
     /**
      * Create and return Or condition which will evaluate given conditions.
      * @param conditions conditions which will be evaluated by And condition
@@ -15,7 +17,7 @@ public class ConditionsFactory {
      */
     @SafeVarargs
     public static <T> PermissionCondition<T> or(PermissionCondition<T>... conditions) {
-        return new OrCondition<T>(conditions);
+        return new OrCondition<>(conditions);
     }
 
     /**
@@ -26,7 +28,7 @@ public class ConditionsFactory {
      */
     @SafeVarargs
     public static <T> PermissionCondition<T> and(PermissionCondition<T>... conditions) {
-        return new AndCondition<T>(conditions);
+        return new AndCondition<>(conditions);
     }
 
     /**
@@ -35,6 +37,6 @@ public class ConditionsFactory {
      * @return created condition
      */
     public static <T> PermissionCondition<T> truthy() {
-        return new TrueCondition<T>();
+        return new TrueCondition<>();
     }
 }

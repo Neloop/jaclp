@@ -170,7 +170,7 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
                     // condition
                     IResourceRepository repository = permissionsService.getResource(rule.getResource());
                     Optional<Object> resource = repository.findById(targetId);
-                    if (!resource.isPresent()) {
+                    if (resource.isEmpty()) {
                         throw new ResourceNotFoundException("Resource with identification '" + targetId + "' not found");
                     }
 

@@ -7,10 +7,10 @@ import java.util.Optional;
 /**
  * Demo group service for getting DemoGroup.
  */
-public class DemoGroupRepository implements IResourceRepository<DemoGroup, Long> {
+public class DemoGroupRepository implements IResourceRepository {
 
     @Override
-    public Optional<DemoGroup> findById(Long id) {
+    public Optional<Object> findById(Object id) {
         return Optional.of(new DemoGroup());
     }
 }

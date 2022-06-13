@@ -15,15 +15,15 @@ public final class Role {
     /**
      * Name of the role
      */
-    private String name;
+    private final String name;
     /**
      * Parent of this role or null
      */
-    private Role parent;
+    private final Role parent;
     /**
      * Associative array of permission rules indexed by resource textual representation
      */
-    private Map<String, List<PermissionRule>> permissionRules = new HashMap<>();
+    private final Map<String, List<PermissionRule>> permissionRules = new HashMap<>();
 
 
     /**
@@ -54,9 +54,7 @@ public final class Role {
      * @param resource to be initialized
      */
     private void initializeResource(String resource) {
-        if (!permissionRules.containsKey(resource)) {
-            permissionRules.put(resource, new ArrayList<>());
-        }
+        permissionRules.computeIfAbsent(resource, ignored -> new ArrayList<>());
     }
 
     /**

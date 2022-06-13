@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class AuthorizatorService {
 
     /** Evaluates all permission related requests */
-    private AclPermissionEvaluator permissionEvaluator;
+    private final AclPermissionEvaluator permissionEvaluator;
 
     /**
      * Constructor.

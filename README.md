@@ -9,7 +9,8 @@
 _ACL-based_ role permission system with a touch of _ABAC_ (Attribute-based 
 access control) over resources. It is integrated within Spring Security and its 
 expression based permission control which might be used from `Authorize`-like 
-annotations over endpoints or generally methods in services.
+annotations over endpoints or generally methods in services. Built with 
+**Java 11**.
 
 ## Installation
 
@@ -196,8 +197,8 @@ import java.util.Map;
 @Service
 public class PermissionsService implements IPermissionsService {
 
-    private Map<String, Role> roles = new HashMap<>();
-    private Map<String, IResourceRepository> resources = new HashMap<>();
+    private final Map<String, Role> roles = new HashMap<>();
+    private final Map<String, IResourceRepository> resources = new HashMap<>();
 
     /**
      * Default constructor which initialize all user roles used within

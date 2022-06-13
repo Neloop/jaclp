@@ -3,7 +3,6 @@ package cz.polankam.security.acl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -13,10 +12,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class JaclpSpringConfiguration {
 
-    @Lazy
-    @Autowired
-    private AclPermissionEvaluator permissionEvaluator;
-
     @Bean
     @Autowired
     public AclPermissionEvaluator aclPermissionEvaluator(IPermissionsService permissionsService, PlatformTransactionManager transactionManager) {
@@ -24,7 +19,7 @@ public class JaclpSpringConfiguration {
     }
 
     @Bean
-    public AuthorizatorService authorizatorService() {
+    public AuthorizatorService authorizatorService(AclPermissionEvaluator permissionEvaluator) {
         return new AuthorizatorService(permissionEvaluator);
     }
 }
