@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Authorizator service, which can be used within whole application for custom
  * authorization checks. Internally it uses custom defined permission evaluator
  * based on user roles and acl permission rules.
- *
+ * <p>
  * Created by Martin Polanka
  */
 public class AuthorizatorService {

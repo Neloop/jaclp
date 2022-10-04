@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.Optional;
+
 /**
  * Spring configuration support for JACLP library, which initializes all needed
  * beans.
@@ -14,8 +16,8 @@ public class JaclpSpringConfiguration {
 
     @Bean
     @Autowired
-    public AclPermissionEvaluator aclPermissionEvaluator(IPermissionsService permissionsService, PlatformTransactionManager transactionManager) {
-        return new AclPermissionEvaluator(permissionsService, transactionManager);
+    public AclPermissionEvaluator aclPermissionEvaluator(IPermissionsService permissionsService, Optional<PlatformTransactionManager> transactionManager) {
+        return new AclPermissionEvaluator(permissionsService, transactionManager.orElse(null));
     }
 
     @Bean

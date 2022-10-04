@@ -5,7 +5,7 @@ package cz.polankam.security.acl;
  * for adding or changing permission related stuff. It is the base for any other
  * authorization services which handles user roles and permissions.
  * Has to be implemented by the one who uses this library.
- *
+ * <p>
  * Created by Martin Polanka
  */
 public interface IPermissionsService {
