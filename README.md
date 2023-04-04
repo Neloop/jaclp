@@ -10,7 +10,7 @@ _ACL-based_ role permission system with a touch of _ABAC_ (Attribute-based
 access control) over resources. It is integrated within Spring Security and its 
 expression based permission control which might be used from `Authorize`-like 
 annotations over endpoints or generally methods in services. Built with 
-**Java 11**.
+**Java 17**.
 
 ## Installation
 

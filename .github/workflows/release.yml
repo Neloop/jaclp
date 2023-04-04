@@ -15,11 +15,11 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-      - name: Setup Java 11 and Apache Maven Central
+      - name: Setup Java 17 and Apache Maven Central
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: 17
           server-id: ossrh
           server-username: OSSRH_USERNAME
           server-password: OSSRH_PASSWORD
