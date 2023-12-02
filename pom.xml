@@ -4,7 +4,7 @@
 
     <groupId>cz.polankam.security.acl</groupId>
     <artifactId>jaclp</artifactId>
-    <version>4.1-SNAPSHOT</version>
+    <version>4.1</version>
 
     <name>JACLP: Java ACL Permissions library</name>
     <description>JACLP: ACL Permission library for Spring Security introduces static ACL-based role permission system with a touch of ABAC (Attribute-based access control) over resources. It is integrated within Spring Security and its expression based permission control which might be used from Authorize-like annotations over endpoints or generally methods in components.</description>
@@ -161,7 +161,7 @@
         <connection>scm:git:https://github.com/Neloop/jaclp.git</connection>
         <developerConnection>scm:git:https://github.com/Neloop/jaclp.git</developerConnection>
         <url>https://github.com/Neloop/jaclp/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>v4.1</tag>
     </scm>
 
     <distributionManagement>
