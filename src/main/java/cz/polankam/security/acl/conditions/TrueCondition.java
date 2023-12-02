@@ -1,6 +1,6 @@
 package cz.polankam.security.acl.conditions;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import cz.polankam.security.acl.Authorized;
 
 /**
  * Condition which is always validated to true.
@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 final class TrueCondition<T> implements PermissionCondition<T> {
 
     @Override
-    public boolean test(UserDetails user, T resource) {
+    public boolean test(Authorized user, T resource) {
         return true;
     }
 }

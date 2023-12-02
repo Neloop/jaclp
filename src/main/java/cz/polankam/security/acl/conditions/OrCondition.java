@@ -1,6 +1,6 @@
 package cz.polankam.security.acl.conditions;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import cz.polankam.security.acl.Authorized;
 
 import java.util.Arrays;
 
@@ -30,7 +30,7 @@ final class OrCondition<T> implements PermissionCondition<T> {
 
 
     @Override
-    public boolean test(UserDetails user, T resource) {
+    public boolean test(Authorized user, T resource) {
         return Arrays.stream(conditions).anyMatch(condition -> condition.test(user, resource));
     }
 }

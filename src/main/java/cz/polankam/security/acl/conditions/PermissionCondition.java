@@ -1,6 +1,6 @@
 package cz.polankam.security.acl.conditions;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import cz.polankam.security.acl.Authorized;
 
 /**
  * Functional interface for permission conditions. Main test method is used for
@@ -18,5 +18,5 @@ public interface PermissionCondition<T> {
      * @param resource resource against which condition is evaluated
      * @return true if condition is truthy, false otherwise
      */
-    boolean test(UserDetails user, T resource);
+    boolean test(Authorized user, T resource);
 }

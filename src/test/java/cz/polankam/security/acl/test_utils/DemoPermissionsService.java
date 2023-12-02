@@ -1,10 +1,10 @@
 package cz.polankam.security.acl.test_utils;
 
+import cz.polankam.security.acl.Authorized;
 import cz.polankam.security.acl.IPermissionsService;
 import cz.polankam.security.acl.IResourceRepository;
 import cz.polankam.security.acl.Role;
 import cz.polankam.security.acl.conditions.ConditionsFactory;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class DemoPermissionsService implements IPermissionsService {
                 true,
                 "group",
                 ConditionsFactory.or(
-                        (UserDetails userDetails, DemoGroup group) -> false, // just to show off or condition
+                        (Authorized authorizedUser, DemoGroup group) -> false, // just to show off or condition
                         DemoGroupConditions::isManager
                 ),
                 "edit"

@@ -1,24 +1,24 @@
 package cz.polankam.security.acl.test_utils;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import cz.polankam.security.acl.Authorized;
 
 public class DemoGroupConditions {
 
-    public static boolean isMember(UserDetails userDetails, DemoGroup resource) {
-        if (!(userDetails instanceof DemoUser) ||
+    public static boolean isMember(Authorized user, DemoGroup resource) {
+        if (!(user instanceof DemoUser) ||
                 resource == null) {
             return false;
         }
 
-        return resource.isMember((DemoUser) userDetails);
+        return resource.isMember((DemoUser) user);
     }
 
-    public static boolean isManager(UserDetails userDetails, DemoGroup resource) {
-        if (!(userDetails instanceof DemoUser) ||
+    public static boolean isManager(Authorized user, DemoGroup resource) {
+        if (!(user instanceof DemoUser) ||
                 resource == null) {
             return false;
         }
 
-        return resource.isManager((DemoUser) userDetails);
+        return resource.isManager((DemoUser) user);
     }
 }
