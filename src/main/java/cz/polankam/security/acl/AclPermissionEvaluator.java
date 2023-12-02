@@ -5,7 +5,6 @@ import cz.polankam.security.acl.exceptions.ResourceNotFoundException;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -107,15 +106,11 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     private boolean hasPermissionInternal(Authentication authentication, Object targetDomainObject, Object permission) {
         if (authentication == null ||
-                !(authentication.getPrincipal() instanceof UserDetails) ||
-                !(targetDomainObject instanceof String) ||
-                !(permission instanceof String)) {
+                !(authentication.getPrincipal() instanceof Authorized user) ||
+                !(targetDomainObject instanceof String targetResource) ||
+                !(permission instanceof String permissionString)) {
             return false;
         }
-
-        UserDetails user = (UserDetails) authentication.getPrincipal();
-        String targetResource = (String) targetDomainObject;
-        String permissionString = (String) permission;
 
         // check the permissions against all user roles
         for (GrantedAuthority authority : user.getAuthorities()) {
@@ -142,13 +137,10 @@ public class AclPermissionEvaluator implements PermissionEvaluator {
 
     private boolean hasPermissionInternal(Authentication authentication, Serializable targetId, String targetType, Object permission) {
         if (authentication == null ||
-                !(authentication.getPrincipal() instanceof UserDetails) ||
-                !(permission instanceof String)) {
+                !(authentication.getPrincipal() instanceof Authorized user) ||
+                !(permission instanceof String permissionString)) {
             return false;
         }
-
-        UserDetails user = (UserDetails) authentication.getPrincipal();
-        String permissionString = (String) permission;
 
         // check the permissions against all user roles
         for (GrantedAuthority authority : user.getAuthorities()) {
